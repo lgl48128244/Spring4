@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd  
+            http://www.springframework.org/schema/context  
+            http://www.springframework.org/schema/context/spring-context.xsd  
+            http://www.springframework.org/schema/tx  
+            http://www.springframework.org/schema/tx/spring-tx.xsd  
+            http://www.springframework.org/schema/mvc 
+            http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+            http://www.springframework.org/schema/jdbc  
+            http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+            http://www.springframework.org/schema/mvc  
+    		http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	<!--注解说明 -->
+	<context:annotation-config />
+	<!-- 默认的注解映射的支持 -->
+	<mvc:annotation-driven />
+	<!-- 把标记了@Controller注解的类转换为bean -->
+	<context:component-scan base-package="action" />
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 请求映射 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+
+	<!-- 总错误处理 -->
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<!-- 定义需要特殊处理的异常，用类名或完全路径名作为key，异常也页名作为值 -->
+		<property name="exceptionMappings">
+			<props>
+				<!-- 上传文件大于最大尺寸后转向出错页面 -->
+				<prop key="org.springframework.web.multipart.MaxUploadSizeExceededException"> redirect:/uploadError.jsp </prop>
+				<prop key="other.RequestException">/jsp/exception</prop>
+				<prop key="java.lang.NullPointerException">/jsp/exception</prop>
+			</props>
+		</property>
+		<!-- 定义默认的异常处理页面，当该异常类型的注册时使用 -->
+		<property name="defaultErrorView" value="jsp/exception"></property>
+		<!-- 定义异常处理页面用来获取异常信息的变量名，默认名为exception -->
+		<property name="exceptionAttribute" value="ex"></property>
+		<!-- 相关状态码对应的错误页面 -->
+		<property name="statusCodes">
+			<props>
+				<prop key="jsp/404">404</prop>
+				<prop key="jsp/500">500</prop>
+			</props>
+		</property>
+		<!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->
+		<property name="warnLogCategory" value="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver" />
+		<!-- 默认HTTP状态码 -->
+		<property name="defaultStatusCode" value="500" />
+	</bean>
+
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/</value>
+			<!-- <value>/WEB-INF/page/</value> -->
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+</beans>

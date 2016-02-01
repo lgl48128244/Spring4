@@ -25,7 +25,7 @@
 		var v = document.getElementById("digit");
 		alert(v.value);
 	}
-	test();
+	//test();
 	function test1() {
 		var d, s = "今天是星期：";
 		d = new Date();
@@ -38,7 +38,7 @@
 </head>
 
 <body>
-	<button type="button" value="" id="digit" />
+	<button type="button" value="button" id="digit" />
 	<input type="radio">
 </body>
 </html>
